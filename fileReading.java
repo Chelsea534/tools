@@ -26,8 +26,7 @@ public class fileReading {
     
     
     void processFile(){
-            //Reader fileReader = new FileReader("D:\\University\\Intern\\week2\\day1\\mappingfiles\\deb_master_all.csv");
-
+            
         long epoch = System.currentTimeMillis();
         String fileName = "table_" + epoch + ".xml";
 
