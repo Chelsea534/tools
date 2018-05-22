@@ -31,12 +31,12 @@ public class fileReading {
         long epoch = System.currentTimeMillis();
         String fileName = "table_" + epoch + ".xml";
 
-        File f = new File("D:\\University\\Intern\\week3\\Accounts_Table.csv");
+        File f = new File("....\\Accounts_Table.csv");
 
         //System.out.println("Loaded successfully");
         StringBuilder sB = new StringBuilder();
         try (BufferedReader bF = new BufferedReader(new FileReader(f));
-                FileWriter fW = new FileWriter(new File("D:\\University\\Intern\\week3\\" + fileName));) {
+                FileWriter fW = new FileWriter(new File(".....\\" + fileName));) {
             String read = "";
             while ((read = bF.readLine()) != null) {
 
