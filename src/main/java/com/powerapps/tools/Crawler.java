@@ -31,8 +31,12 @@ public class Crawler {
         boolean matches = m.find();
         if(matches) {
           String group  = m.group(0);
-          crawlPages(ROOT_PATH + group);
-          FILE_LIST.add(group);
+          if(!FILE_LIST.contains(group)) {
+            FILE_LIST.add(group);
+            crawlPages(ROOT_PATH + group);
+            
+          }
+
         }
       }
     } catch(Exception e) {
@@ -41,7 +45,7 @@ public class Crawler {
   }
   
   public static void main(String args[]) {
-    new Crawler().crawlPages(ROOT_PATH + "wlm-main.frm");
+    new Crawler().crawlPages(ROOT_PATH + "eca-main.frm");
     //System.out.println(files.toString());
     
     for(String x : FILE_LIST) {
