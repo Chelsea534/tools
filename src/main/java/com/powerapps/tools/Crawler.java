@@ -18,22 +18,28 @@ public class Crawler {
   
   private static final Logger LOG = LoggerFactory.getLogger(Crawler.class);
   public static final List<String> FILE_LIST = new ArrayList<>();
-  public static String ROOT_PATH;
+  public String rootPath;
   
   public Crawler(String rootPath) {
-    ROOT_PATH = rootPath;
+    this.rootPath = rootPath;
   }
   
   
-  public Matcher matcher(final String candidate, final String pattern) {
+  private Matcher matcher(final String candidate, final String pattern) {
     Pattern p = Pattern.compile(pattern);
     Matcher m = p.matcher(candidate);
     return m;
   }
   
   
-  void writeToFile(File f) {
+  private void writeToFile(File f) {
     new FileUtils().writeListToFile(f, FILE_LIST, true);
+  }
+  
+  private void printPageHierarchy() {
+    for(String msg : FILE_LIST) {
+      LOG.info(msg);
+    }
   }
   
   
@@ -48,27 +54,24 @@ public class Crawler {
           String group  = m.group(0);
           if(!FILE_LIST.contains(group)) {
             FILE_LIST.add(group);
-            crawlPages(ROOT_PATH + group);
-            
+            crawlPages(rootPath + group);
           }
-
         }
       }
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("{}",e.getMessage());
     }
   }
   
+  
   public static void main(String args[]) {
-    final String rootPath = args[0];
+    final String rootPathArg = args[0];
     final String rootPage = args[1];
     final String crawlOut = args[2];
-    Crawler crawler = new Crawler(rootPath);
-    crawler.crawlPages(rootPath + rootPage);
+    Crawler crawler = new Crawler(rootPathArg);
+    crawler.crawlPages(rootPathArg + rootPage);
     crawler.writeToFile(new File(crawlOut));
-    for(String msg : FILE_LIST) {
-      LOG.info(msg);
-    }
+    crawler.printPageHierarchy();
   }
 
 }
