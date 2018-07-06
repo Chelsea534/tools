@@ -11,14 +11,13 @@ import java.util.regex.Pattern;
 
 public class Crawler {
   
-  public static final List<String> files = new ArrayList<>();
-  public static final String rootPath = "/media/joshua/martian/ptrworkspace/mbsb_dev/clientconfig/";
+  public static final List<String> FILE_LIST = new ArrayList<>();
+  public static final String ROOT_PATH = "/media/joshua/martian/ptrworkspace/mbsb_dev/clientconfig/";
   
   
   public Matcher matcher(final String candidate, final String pattern) {
     Pattern p = Pattern.compile(pattern);
     Matcher m = p.matcher(candidate);
-    //return m.find();
     return m;
   }
   
@@ -28,13 +27,12 @@ public class Crawler {
     try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(f)))) {
       String line;
       while((line = r.readLine()) != null) {
-        //Matcher m = matcher(line, "[a-zA-Z\\-\\_]+(.frm|.tbl)");
         Matcher m = matcher(line, "[a-zA-Z\\-\\_]+(.frm|.tbl)");
         boolean matches = m.find();
         if(matches) {
           String group  = m.group(0);
-          crawlPages(rootPath + group);
-          files.add(group);
+          crawlPages(ROOT_PATH + group);
+          FILE_LIST.add(group);
         }
       }
     } catch(Exception e) {
@@ -43,10 +41,10 @@ public class Crawler {
   }
   
   public static void main(String args[]) {
-    new Crawler().crawlPages(rootPath + "wlm-main.frm");
+    new Crawler().crawlPages(ROOT_PATH + "wlm-main.frm");
     //System.out.println(files.toString());
     
-    for(String x : files) {
+    for(String x : FILE_LIST) {
       System.out.println(x);
     }
   }
