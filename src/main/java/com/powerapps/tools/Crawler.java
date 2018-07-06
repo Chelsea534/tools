@@ -9,16 +9,31 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.kollect.etl.util.FileUtils;
+
 public class Crawler {
   
+  private static final Logger LOG = LoggerFactory.getLogger(Crawler.class);
   public static final List<String> FILE_LIST = new ArrayList<>();
-  public static final String ROOT_PATH = "/media/joshua/martian/ptrworkspace/mbsb_dev/clientconfig/";
+  public static String ROOT_PATH;
+  
+  public Crawler(String rootPath) {
+    ROOT_PATH = rootPath;
+  }
   
   
   public Matcher matcher(final String candidate, final String pattern) {
     Pattern p = Pattern.compile(pattern);
     Matcher m = p.matcher(candidate);
     return m;
+  }
+  
+  
+  void writeToFile(File f) {
+    new FileUtils().writeListToFile(f, FILE_LIST, true);
   }
   
   
@@ -45,11 +60,14 @@ public class Crawler {
   }
   
   public static void main(String args[]) {
-    new Crawler().crawlPages(ROOT_PATH + "eca-main.frm");
-    //System.out.println(files.toString());
-    
-    for(String x : FILE_LIST) {
-      System.out.println(x);
+    final String rootPath = args[0];
+    final String rootPage = args[1];
+    final String crawlOut = args[2];
+    Crawler crawler = new Crawler(rootPath);
+    crawler.crawlPages(rootPath + rootPage);
+    crawler.writeToFile(new File(crawlOut));
+    for(String msg : FILE_LIST) {
+      LOG.info(msg);
     }
   }
 
